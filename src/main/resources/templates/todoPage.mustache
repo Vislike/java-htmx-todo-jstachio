@@ -1,0 +1,31 @@
+{{<htmlBase}}
+{{$body}}
+	<h1>Todo App</h1>
+	{{$todoList}}
+	<ul id="todo-list">
+		{{#todos}}
+		{{$todoItem}}
+		<li id="todo-{{id}}" hx-target="#todo-{{id}}" hx-swap="outerHTML" style="display: flex; align-items: center;">
+			<input type="checkbox" hx-post="/todos/{{id}}/toggle" style="flex-basis: 0; min-width: 20px"
+				{{#completed}}checked{{/completed}}
+				{{#editing}}disabled{{/editing}}
+			>
+			{{#editing}}
+			<input value="{{content}}" name="value" type="text" hx-post="/todos/{{id}}" hx-target="#todo-{{id}}" style="flex-grow: 2;" autofocus>
+			{{/editing}}
+			{{^editing}}
+			<div hx-post="/todos/{{id}}/edit" style="flex-grow: 1; cursor: text;">{{content}}</div>
+			{{/editing}}
+		</li>
+		{{/todoItem}}
+		{{/todos}}
+		<li style="list-style-type: none">
+			<form hx-swap="outerHTML" hx-target="#todo-list" hx-post="/todos" style="display: flex;">
+				<input required type="text" name="content">
+				<input value="Add" type="submit">
+			</form>
+		</li>
+	</ul>
+	{{/todoList}}
+{{/body}}
+{{/htmlBase}}
